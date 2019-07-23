@@ -12,10 +12,10 @@
 
 
 ## 演示地址
-[http://www.lukh.top/home/index/list][1]
+[http://www.lukh.top/home/index/list]
 
 ## 项目源码
-[https://github.com/lukunhong/myFirstBlog][3]
+[https://github.com/lukunhong/myFirstBlog]
 
 ## 项目特点
 
