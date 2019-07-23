@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="<?php echo __ACSS__;?>/font.css">
+        <link rel="stylesheet" href="<?php echo __ACSS__;?>/xadmin.css">
+        <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
+        <script src="<?php echo __ALIB__;?>/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="<?php echo __AJS__;?>/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+        <script src="<?php echo __AJS__;?>/html5.min.js"></script>
+        <script src="<?php echo __AJS__;?>/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            .getcode {
+                font-size: 0.22rem;
+                background: linear-gradient(180deg, rgba(114, 190, 237, 1), rgba(150, 207, 243, 1));
+                border-radius: 0.23rem;
+                color: #fff;
+                padding: 0.08rem .2rem;
+                text-align: center;
+                margin-bottom: .1rem;
+            }
+            .hasTypeCode {
+                font-size: 0.22rem;
+                background-color: grey;
+                border-radius: 0.23rem;
+                color: #fff;
+                padding: 0.08rem .2rem;
+                text-align: center;
+                margin-bottom: .1rem;
+            }
+            /*密码强度*/
+            #passStrength{height:6px;width:120px;border:1px solid #ccc;padding:2px;margin-top: 10px;}
+            .strengthLv1{background:red;height:6px;width:40px;}
+            .strengthLv2{background:orange;height:6px;width:80px;}
+            .strengthLv3{background:green;height:6px;width:120px;}
+            .strcolor3{color:green}
+            .strcolor2{color:orange}
+            .strcolor1{color:red}
+            .strcolor0{color:red}
+        </style>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="username" class="layui-form-label">
+                          <span class="x-red">*</span>登录名
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="username" name="username" required="" lay-verify="required"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">
+                          <span class="x-red">*</span>将会成为您唯一的登入名
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="phone" class="layui-form-label">
+                          <span class="x-red">*</span>手机
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="phone" name="phone"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_email" class="layui-form-label">
+                          <span class="x-red">*</span>验证码
+                      </label>
+                      <div class="layui-input-inline"  style="width: 100px;">
+                          <input type="text" id="verify_code" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class=" layui-word-aux">
+                          <span class="layui-btn getcode" id="getcode" onclick="toget()">获取验证码 <span style="display: none" id="seconds"><span class="seconds">60</span>秒</span></span>
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="L_email" class="layui-form-label">
+                            <span class="x-red">*</span>邮箱
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="email" name="email"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red">*</span>
+                        </div>
+                    </div>
+                  <div class="layui-form-item">
+                      <label class="layui-form-label"><span class="x-red">*</span>角色</label>
+                      <div class="layui-input-block" style="width: 190px;">
+                          <select name="" id="r_id">
+                              <?php foreach($role_arr as $v){ ?>
+                              <option value="<?php echo $v['id']; ?>"><?php echo $v['title']; ?></option>
+                              <?php } ?>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_pass" class="layui-form-label">
+                          <span class="x-red">*</span>密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="password"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                      <div style="position: relative;display: inline-block;height: 33px;">
+                          <label style="position: absolute;top: 8px;color: grey;">密码强度</label>
+                          <div style="margin-left: 60px;display: inline-block;">
+                              <div id="passStrength"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label">
+                          <span class="x-red">*</span>确认密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="re_password"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>状态
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="status" value="1" title="启用" checked>
+                            <input type="radio" name="status" value="0" title="禁用">
+                        </div>
+                    </div>
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label">
+                      </label>
+                      <label class="layui-btn" onclick="add()" id="sure">
+                          保存
+                      </label>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+            });
+
+        // 获取验证码
+        var clickFlag = true;
+        function toget() {
+            var phone = $('#phone').val();
+            var myreg=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+            if(!myreg.test(phone)){
+                layer.msg('手机号格式有误，请重输');
+                $('#phone').focus();
+                return false;
+            }
+            $('#getcode').removeAttr('onclick');
+            $("#seconds").attr('style','display:inline-block');
+            $('#getcode').addClass('hasTypeCode').removeClass('getcode');
+            var secondsSum = $('.seconds').text();
+            if (clickFlag) {
+                clickFlag = false;
+                $.ajax({
+                    url: "/index.php/admin/adminUser/getVerifyCode",
+                    type: "post",
+                    data: {phone:phone},
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code==200) {
+                            layer.alert(res.data, {icon: 6})
+                        }else{
+                            layer.alert(res.data, {icon: 5})
+                        }
+                    }
+                });
+                var timer = setInterval(function () {
+                    if (secondsSum === 0) {
+                        clearInterval(timer);
+                        $('.seconds').html('60');
+                        $('#getcode').addClass('getcode').removeClass('hasTypeCode');
+                        $("#seconds").attr('style','display:none');
+                        $('#getcode').attr('onclick',"toget()");
+                        clickFlag = true;
+                    } else {
+                        secondsSum--;
+                        $('.seconds').html(secondsSum)
+                    }
+                }, 1000)
+            }
+        }
+
+        function add() {
+            var account = $("#username").val();
+            var phone = $('#phone').val();
+            var verify_code = $("#verify_code").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var re_password = $("#re_password").val();
+            var r_ids = $("#r_id").val();
+            var status = $("input[name='status']:checked").val();
+            if (account.length<3){
+                layer.msg('登录名不能少于三个字符');
+                $('#username').focus();
+                return false;
+            }else{
+                if (!/^[a-zA-Z0-9_]{3,}$/.test(account)){
+                    layer.msg('登录名仅支持数字字母和_');
+                    $('#username').focus();
+                    return false;
+                }
+            }
+            var myreg=/^1((3[\d])|(4[5,6,7,9])|(5[0-3,5-9])|(6[5-7])|(7[0-8])|(8[\d])|(9[1,8,9]))\d{8}$/;
+            if (phone.length<1){
+                layer.msg('请输入手机号');
+                $('#phone').focus();
+                return false;
+            }else {
+                if (!myreg.test(phone)) {
+                    layer.msg('手机号格式有误，请重输');
+                    $('#phone').focus();
+                    return false;
+                }
+            }
+            if (verify_code.length<1){
+                layer.msg('请输入手机验证码');
+                $('#verify_code').focus();
+                return false;
+            }
+            if (email.length<1){
+                layer.msg('请输入邮箱');
+                $('#email').focus();
+                return false;
+            }else{
+                if(!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*(\.)[a-zA-Z]{2,3}$/.test(email)){
+                    layer.msg('邮箱不合法');
+                    $('#email').focus();
+                    return false;
+                }
+            }
+            if (password.length<1){
+                layer.msg('请输入密码');
+                $('#password').focus();
+                return false;
+            }else{
+                if (!/^[a-zA-Z0-9_~!@#$%&*,.?]+$/.test(password)){
+                    layer.msg('密码不合法');
+                    $('#password').focus();
+                    return false;
+                }
+            }
+            if (re_password.length<1){
+                layer.msg('请输入确认密码');
+                return false;
+            }else{
+                if (re_password != password){
+                    layer.msg('两次密码不一样');
+                    return false;
+                }
+            }
+            $.post("/index.php/admin/adminUser/adminAdd",{account:account,phone:phone,verify_code:verify_code,email:email,r_id:r_ids,status:status,password:password}, function (res) {
+                if (res.code==500){
+                    layer.alert(res.data, {
+                        icon: 5
+                    })
+                }else{
+                    layer.msg(res.data,{icon:1,time:1000});
+                    // 对父窗口进行刷新
+                    window.setTimeout("xadmin.father_reload()",1000);
+                }
+            },'json');
+        }
+        </script>
+
+        <!--密码强度-->
+        <script type="text/javascript">
+            PasswordStrength('password','passStrength');
+
+            function PasswordStrength(passwordID,strengthID){
+                init_prototype(strengthID);
+                var _this = this;
+                document.getElementById(passwordID).onkeyup = function(){
+                    checkStrength(this.value);
+                }
+            };
+            function init_prototype(strengthID){
+                var id = document.getElementById(strengthID);
+                var div = document.createElement('div');
+                var strong = document.createElement('strong');
+                this.oStrength = id.appendChild(div);
+                this.oStrengthTxt = id.parentNode.appendChild(strong);
+            };
+            function checkStrength(val){
+                var aLvTxt = ['强度很低','强度较低','中等强度','密码很强'];
+                var lv = 0;
+                if(val.match(/[a-z]/g)){lv++;}
+                if(val.match(/[0-9]/g)){lv++;}
+                if(val.match(/(.[^a-z0-9])/g)){lv++;}
+                if(val.length < 5){lv=0;}
+                if(lv > 3){lv=3;}
+                if (lv != 0){
+                    lv = lv<2 ? val.length<7?1:2 : lv<3 ? val.length<7?2:3 : val.length<7?2:3;
+                }
+                this.oStrength.className = 'strengthLv' + lv;
+                this.oStrengthTxt.innerHTML = aLvTxt[lv];
+                this.oStrengthTxt.className='strcolor' + lv;
+
+            };
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lulu的BLOG</title>
+<link rel="stylesheet" type="text/css" href="<?php echo __CSS__;?>/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo __CSS__;?>/nprogress.css">
+<link rel="stylesheet" type="text/css" href="<?php echo __CSS__;?>/style.css">
+<link rel="stylesheet" type="text/css" href="<?php echo __CSS__;?>/font-awesome.min.css">
+<link rel="apple-touch-icon-precomposed" href="<?php echo __IMAGES__;?>/icon/icon.png">
+<link rel="shortcut icon" href="<?php echo __IMAGES__;?>/icon/favicon.ico">
+<script src="<?php echo __JS__;?>/jquery-2.1.4.min.js"></script>
+<script src="<?php echo __JS__;?>/nprogress.js"></script>
+<script src="<?php echo __JS__;?>/jquery.lazyload.min.js"></script>
+<!--[if gte IE 9]>
+  <script src="<?php echo __JS__;?>/jquery-1.11.1.min.js" type="text/javascript"></script>
+  <script src="<?php echo __JS__;?>/html5shiv.min.js" type="text/javascript"></script>
+  <script src="<?php echo __JS__;?>/respond.min.js" type="text/javascript"></script>
+  <script src="<?php echo __JS__;?>/selectivizr-min.js" type="text/javascript"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script>window.location.href='/home/index/ieBrowser';</script>
+<![endif]-->
+</head>
+
+<body class="user-select">
+<header class="header">
+  <nav class="navbar navbar-default" id="navbar">
+    <div class="container">
+      <div class="header-topbar hidden-xs link-border">
+        <!--联系-->
+        <ul class="site-nav topmenu">
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" rel="nofollow">联系LuLu <span class="caret"></span></a>
+            <ul class="dropdown-menu header-topbar-dropdown-menu">
+              <li><a data-toggle="modal" data-target="#WeChat" rel="nofollow"><i class="fa fa-weixin"></i> 微信</a></li>
+              <li><a data-toggle="modal" data-target="#areDeveloping" rel="nofollow"><i class="fa fa-rss"></i> GitHub</a></li>
+              <?php if($flag!='请登录'){ ?>
+              <li><a href="/home/index/loginOut" >退出登录</a></li>
+              <?php } ?>
+            </ul>
+          </li>
+        </ul>
+
+        <a data-toggle="modal" <?php if($flag=='请登录'){echo 'onclick="show()"';}?> class="login" rel="nofollow">Hi,<?php echo $flag?></a>&nbsp;&nbsp;
+        <?php if($flag=='请登录'){ ?> <a href="/home/index/registerNew" >我要注册</a>&nbsp;&nbsp;
+        <a href="/home/index/resetPsd" rel="nofollow">找回密码</a> <?php } ?></div>
+      <!--blog图-->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false"> <span class="sr-only"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+        <h1 class="logo hvr-bounce-in"><a href="" title=""><img src="<?php echo __IMAGES__;?>/logo.png" alt=""></a></h1>
+      </div>
+      <div class="collapse navbar-collapse" id="header-navbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="hidden-index active"><a href="/home/index/list">LuLu的首页</a></li>
+          <?php foreach($cat_res as $v){ ?>
+          <li><a href="/home/index/category?cat_id=<?php echo $v['id']; ?>"><?php echo $v['cat_name']; ?></a></li>
+          <?php } ?>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<section class="container">
+  <div class="content-wrap">
+    <div class="content">
+      <div class="jumbotron" style="display: inline-block">
+        <h1>欢迎访问LuLu的BLOG</h1>
+        <p>在这里可以看到在本站可以看到关于本人的一些相关文章和笔记，还有我的程序人生！编程不易，且行且珍惜(^_^)</p>
+      </div>
+      <!--轮播图-->
+      <div id="focusslide" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#focusslide" data-slide-to="0" class="active"></li>
+          <li data-target="#focusslide" data-slide-to="1"></li>
+          <li data-target="#focusslide" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+          <div class="item active"> <a href="" target="_blank">
+            <img src="<?php echo __IMAGES__;?>/banner/banner_01.jpg" alt="" class="img-responsive"></a>
+          </div>
+          <div class="item"> <a href="" target="_blank">
+            <img src="<?php echo __IMAGES__;?>/banner/banner_02.jpg" alt="" class="img-responsive"></a>
+          </div>
+          <div class="item"> <a href="" target="_blank">
+            <img src="<?php echo __IMAGES__;?>/banner/banner_03.jpg" alt="" class="img-responsive"></a>
+          </div>
+        </div>
+        <a class="left carousel-control" href="#focusslide" role="button" data-slide="prev" rel="nofollow"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">上一个</span> </a> <a class="right carousel-control" href="#focusslide" role="button" data-slide="next" rel="nofollow"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">下一个</span> </a> </div>
+
+<!--今日推荐-->
+      <article class="excerpt-minic excerpt-minic-index">
+        <h2><span class="red">【如何选择】</span></h2>
+        <p class="note">一次我下载几部电影，发现如果同时下载多部要等上几个小时，然后我把最想看的做个先后排序，去设置同时只能下载一部，结果是不到一杯茶功夫我就能看到最想看的电影。 这就像我们一段时间内想干成很多事情，是同时干还是有选择有顺序的干，结果很不一样。</p>
+      </article>
+    <!--原始显示-->
+      <div id="art_list">
+        <div class="title">
+          <h3>最新发布</h3>
+          <!--<div class="more"><a href="">PHP</a><a href="">JavaScript</a><a href="">EmpireCMS</a><a href="">Apache</a><a href="">MySQL</a></div>-->
+        </div>
+        <?php foreach($article_res as $value){ ?>
+        <article class="excerpt excerpt-2"><a class="focus" href="/home/index/article?art_id=<?php echo $value['id']; ?>" title="">
+          <img class="thumb" data-original="<?php echo __UPLOADS__.'/'.$value['pic'];?>" alt=""></a>
+          <header><a class="cat" href="/home/index/category?cat_id=<?php echo $value['cat_id']; ?>"><?php echo $value['cat_name']; ?><i></i></a>
+            <h2><a href="/home/index/article?art_id=<?php echo $value['id']; ?>" title=""><?php echo $value['title']; ?></a></h2>
+          </header>
+          <p class="meta">
+            <time class="time"><i class="glyphicon glyphicon-time"></i> <?php echo $value['pub_time']; ?></time>
+            <span class="views"><i class="glyphicon glyphicon-eye-open"></i> 共<?php echo mt_rand(1,200); ?>人围观</span>
+            <a class="comment"><i class="glyphicon glyphicon-comment"></i> <?php echo $value['comm']; ?>个评论</a></p>
+          <div class="note"><?php echo $value['content']; ?>... </div>
+        </article>
+        <?php }  ?>
+      </div>
+
+      <!--搜索结果-->
+      <div id="search_result" style="display: none;">
+
+      </div>
+
+    </div>
+  </div>
+    <!--右侧菜单-->
+  <aside class="sidebar">
+    <div class="fixed">
+      <div class="widget widget-tabs">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">网站公告</a></li>
+          <!--<li role="presentation"><a href="#centre" aria-controls="centre" role="tab" data-toggle="tab">会员中心</a></li>-->
+          <li role="presentation"><a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长</a></li>
+        </ul>
+        <div class="tab-content">
+          <!--网站公告-->
+          <div role="tabpanel" class="tab-pane notice active" id="notice">
+            <ul>
+              <li>
+                <time datetime="2016-01-04"><?php echo date('m-d'); ?></time>
+                <a href="" onclick="javascript:void(this)">LuLu最近比较懒，什么都没留下</a></li>
+            </ul>
+          </div>
+          <!--会员中心-->
+          <!--<div role="tabpanel" class="tab-pane centre" id="centre">-->
+            <!--<h4>需要登录才能进入会员中心</h4>-->
+            <!--<p> <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary">立即登录</a> <a href="javascript:;" class="btn btn-default">现在注册</a> </p>-->
+          <!--</div>-->
+          <!--联系站长-->
+          <div role="tabpanel" class="tab-pane contact" id="contact">
+            <h2>Email:<br />
+              <a href="mailto:admin@ylsat.com" data-toggle="tooltip" data-placement="bottom" title="990527551@qq.com">990527551@qq.com</a></h2>
+          </div>
+        </div>
+      </div>
+      <!--搜索-->
+      <div class="widget widget_search">
+        <form class="navbar-form" method="post">
+          <div class="input-group">
+            <input type="text" name="keyword" id="keyword" class="form-control" size="35" placeholder="请输入关键字" maxlength="15" autocomplete="off">
+            <span class="input-group-btn">
+            <label class="btn btn-default btn-search" onclick="search()">搜索</label>
+            </span> </div>
+        </form>
+      </div>
+    </div>
+    <!--每日一句-->
+    <div class="widget widget_sentence">
+      <h3>每日经典</h3>
+      <div class="widget-sentence-content">
+        <h4><?php $weekarray=array("日","一","二","三","四","五","六");echo date('Y年m月d日').'星期'.$weekarray[date("w")]; ?></h4>
+        <p>Do not let what you cannot do interfere with what you can do.<br />
+          别让你不能做的事妨碍到你能做的事。（John Wooden）</p>
+      </div>
+    </div>
+    <!--热门文章-->
+    <div class="widget widget_hot">
+      <h3>热门文章</h3>
+      <ul>
+        <?php foreach($article_res as $value){ ?>
+        <li><a href="/home/index/article?art_id=<?php echo $value['id']; ?>"><?php echo $value['title']; ?><span class="thumbnail">
+          <img class="thumb" data-original="<?php echo __UPLOADS__.'/'.$value['pic'];?>" src="<?php echo __UPLOADS__.'/'.$value['pic'];?>" alt="">
+        </span><span class="text"></span><span class="muted">
+          <i class="glyphicon glyphicon-time"></i> <?php echo $value['pub_time']; ?></span><span class="muted"><i class="glyphicon glyphicon-eye-open"></i> <?php echo mt_rand(1,200); ?></span></a></li>
+        <?php }  ?>
+      </ul>
+    </div>
+  </aside>
+</section>
+<!--页脚-->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2019 <a href="">990527551@qq.com</a> &nbsp; </p>
+  </div>
+  <div id="gotop"><a class="gotop"></a></div>
+</footer>
+<!--微信二维码模态框-->
+<div class="modal fade user-select" id="WeChat" tabindex="-1" role="dialog" aria-labelledby="WeChatModalLabel">
+  <div class="modal-dialog" role="document" style="margin-top:120px;max-width:280px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="WeChatModalLabel" style="cursor:default;">微信扫一扫</h4>
+      </div>
+      <div class="modal-body" style="text-align:center"> <img src="<?php echo __IMAGES__;?>/weixin.jpg" alt="" style="cursor:pointer"/> </div>
+    </div>
+  </div>
+</div>
+<!--该功能正在日以继夜的开发中-->
+<div class="modal fade user-select" id="areDeveloping" tabindex="-1" role="dialog" aria-labelledby="areDevelopingModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="areDevelopingModalLabel" style="cursor:default;">该功能正在日以继夜的开发中…</h4>
+      </div>
+      <div class="modal-body"> <img src="<?php echo __IMAGES__;?>/baoman/baoman_01.gif" alt="深思熟虑" />
+        <p style="padding:15px 15px 15px 100px; position:absolute; top:15px; cursor:default;">很抱歉，程序猿正在日以继夜的开发此功能，本程序将会在以后的版本中持续完善！</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">朕已阅</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--登录注册模态框-->
+<div class="modal fade user-select" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="post">
+        <div class="modal-header">
+          <button type="button" class="close" onclick="gb_close()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="loginModalLabel">登录</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="loginModalUserNmae">用户名</label>
+            <input type="text" class="form-control" id="username" placeholder="请输入用户名" autofocus maxlength="15" autocomplete="off" >
+          </div>
+          <div class="form-group">
+            <label for="loginModalUserPwd">密码</label>
+            <input type="password" class="form-control" id="password" placeholder="请输入密码" maxlength="18" autocomplete="off" >
+          </div>
+        <div class="form-group">
+            <label for="loginModalUserPwd" style="display: block;">验证码</label>
+            <input type="text" class="form-control" id="verify_code" placeholder="请输入密码" maxlength="18" autocomplete="off" style="width: 150px;float: left;">
+            <img id="img" src="/home/index/vCode" alt="验证码" width="90" height="36" style="display: inline-block;float: left;margin-left: 15px;" onclick="new_verify(this)">
+        </div>
+        </div>
+        <div class="modal-footer" style="margin-top: 33px">
+          <button type="button" class="btn btn-default" onclick="gb_close()">取消</button>
+          <label class="btn btn-primary" onclick="login()">登录</label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--模态框-->
+<div id="bg" style="display: none;position: fixed;top: 0;left: 0; width: 100%;height: 100%;background-color: black;z-index:1001;-moz-opacity: 0.3;opacity:.30;filter: alpha(opacity=30);"></div>
+<div id="rightClickMenu">
+  <ul class="list-group rightClickMenuList">
+    <li class="list-group-item disabled">欢迎访问LuLu的BLOG</li>
+    <li class="list-group-item"><span>IP：</span><?php echo getIp(); ?></li>
+    <li class="list-group-item"><span>地址：</span><?php echo getIpAddress(); ?></li>
+    <li class="list-group-item"><span>系统：</span><?php echo php_uname('s'); ?> </li>
+    <!--<li class="list-group-item"><span>浏览器：</span>Chrome47</li>-->
+  </ul>
+</div>
+<script src="<?php echo __JS__;?>/bootstrap.min.js"></script>
+<script src="<?php echo __JS__;?>/scripts.js"></script>
+<script src="<?php echo __ALIB__;?>/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo __AJS__;?>/xadmin.js"></script>
+<script>
+    //ajax搜索
+    function search(){
+        var keyword = $("#keyword").val();
+        if (keyword.length<1){layer.msg('搜索内容不能为空');return;}
+        $.ajax({
+            url: "/home/index/search",
+            type: "post",
+            data: {keyword:keyword},
+            dataType: 'json',
+            success: function (res) {
+                if(res.code==200){
+                    $("#art_list").empty();
+                    $("#search_result").empty();
+                    $("#search_result").attr('style','display:block');
+                    var len = res.data.length;
+                    var str = ' <div class="title">' +
+                        '<h3>搜索结果</h3>' +
+                        '</div>';
+                    for (var i=0;i<len;i++){
+                        str +='<article class="excerpt excerpt-2"><a class="focus" href="/home/index/article?art_id='+res.data[i].id+'" title="">' +
+                            '<img class="thumb" data-original="<?php echo __UPLOADS__;?>/'+res.data[i].pic+'" src="<?php echo __UPLOADS__;?>/'+res.data[i].pic+'" alt=""></a>' +
+                            '<header><a class="cat" href="/home/index/category?cat_id='+res.data[i].cat_id+'">'+res.data[i].cat_name+'<i></i></a>' +
+                            '<h2><a href="/home/index/article?art_id='+res.data[i].id+'" title="">'+res.data[i].title+'</a></h2>' +
+                            '</header>' +
+                            '<p class="meta">' +
+                            '<time class="time"><i class="glyphicon glyphicon-time"></i> '+res.data[i].pub_time+'</time>' +
+                            '<span class="views"><i class="glyphicon glyphicon-eye-open"></i> <?php echo mt_rand(1,200); ?>人围观</span>' +
+                            '<a class="comment"><i class="glyphicon glyphicon-comment"></i> '+res.data[i].comm+'个评论</a></p>' +
+                            '<div class="note">'+res.data[i].content+'... </div>' +
+                            '</article>';
+                    }
+                    if (len==0){
+                        str += '<article class="excerpt excerpt-2"><h2>暂无相关内容</h2></article>';
+                    }
+                    $("#search_result").append(str);
+                }else{
+                    layer.msg(res.data);
+                }
+            }
+        });
+    }
+
+    //登录
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var verify_code = $("#verify_code").val();
+        if (check(username,password,verify_code)) {
+            $.post('/home/index/login', {
+                username: username,
+                password: password,
+                verify_code: verify_code
+            }, function (res) {
+                if (res.code == 500) {
+                    layer.alert(res.data, {
+                        icon: 5
+                    });
+                    $("#img").attr("src",'/home/index/vCode?nowtime='+new Date().getTime())
+                } else {
+                    layer.msg(res.data, {icon: 1, time: 1000});
+                    window.setTimeout("gb_close()",1000);
+                    window.setTimeout("window.location.href = self.location.href",1000);
+                }
+            }, 'json');
+        }else{
+            return false;
+        }
+    }
+
+    //模态框开启
+    function show() {
+        $('#bg').show();
+        $("#loginModal").removeClass("modal fade user-select");
+        $("#loginModal").addClass("modal fade user-select in");
+        $('#loginModal').attr('style','display:block');
+    }
+
+    //模态框关闭
+    function gb_close() {
+        $('#bg').hide();
+        $("#loginModal").removeClass("modal fade user-select in");
+        $("#loginModal").addClass("modal fade user-select");
+        $('#loginModal').attr('style','display:none');
+    }
+
+    //刷新验证码
+    function new_verify(obj) {
+        obj.src='/home/index/vCode?nowtime='+new Date().getTime();
+    }
+
+    function check(username,password,verify_code) {
+        if (username.length<1) {
+            layer.msg('请输入用户名');
+            return false;
+        }
+        if (password.length<1){
+            layer.msg('请输入密码');
+            return false;
+        }
+        if (verify_code.length<1){
+            layer.alert('请输入验证码', {
+                icon: 5
+            });
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

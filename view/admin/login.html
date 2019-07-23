@@ -1,0 +1,122 @@
+<!doctype html>
+<html  class="x-admin-sm">
+<head>
+	<meta charset="UTF-8">
+    <title>lulu的BLOG</title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="<?php echo __ACSS__;?>/font.css">
+    <link rel="stylesheet" href="<?php echo __ACSS__;?>/login.css">
+    <script src="<?php echo __ALIB__;?>/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="<?php echo __AJS__;?>/xadmin.js"></script>
+    <script type="text/javascript" src="<?php echo __AJS__;?>/jquery.min.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="<?php echo __AJS__;?>/html5.min.js"></script>
+    <script src="<?php echo __AJS__;?>/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .logbtn{
+            display: inline-block;
+            vertical-align: middle;
+            padding: 12px 24px;
+            margin: 0px;
+            font-size: 18px;
+            line-height: 24px;
+            text-align: center;
+            white-space: nowrap;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: #189F92;
+            border-radius: 3px;
+            border: none;
+            -webkit-appearance: none;
+            outline: none;
+            width: 86%;
+        }
+    </style>
+</head>
+<body class="login-bg">
+    
+    <div class="login layui-anim layui-anim-up">
+        <div class="message">lulu的BLOG-后台登录</div>
+        <div id="darkbannerwrap"></div>
+        
+        <form method="post" class="layui-form" action="">
+            <input id="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" autocomplete="off">
+            <hr class="hr15">
+            <input id="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+            <hr class="hr15">
+            <div>
+                <input type="text" id="verify_code" autocomplete="off" class="layui-input" placeholder="验证码" style="width: 200px;display: inline-block;float: left;">
+                <img id="img" src="/index.php/admin/login/vCode" alt="验证码" width="90" height="50" style="display: inline-block;float: left;margin-left: 15px;" onclick="new_verify(this)">
+            </div>
+            <hr class="hr15">
+            <label class="logbtn" onclick="login()">登录</label>
+            <hr class="hr20" >
+        </form>
+    </div>
+
+    <script>
+        $(function  () {
+            layui.use('form', function(){
+            });
+        });
+        //登录
+        function login() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var verify_code = $("#verify_code").val();
+            if (check(username,password,verify_code)) {
+                $.post('/index.php/admin/login/index', {
+                    username: username,
+                    password: password,
+                    verify_code: verify_code
+                }, function (res) {
+                    if (res.code == 500) {
+                        layer.alert(res.data, {
+                            icon: 5
+                        });
+                        $("#img").attr("src",'/index.php/admin/login/vCode?nowtime='+new Date().getTime())
+                    } else {
+                        layer.msg(res.data, {icon: 1, time: 1000});
+                        window.location.href = '/index.php/admin/index/list';
+                    }
+                }, 'json');
+            }else{
+                return false;
+            }
+        }
+
+        function check(username,password,verify_code) {
+            if (username.length<1) {
+                layer.alert('请输入用户名', {
+                    icon: 5
+                });
+                return false;
+            }
+            if (password.length<1){
+                layer.alert('请输入密码', {
+                    icon: 5
+                });
+                return false;
+            }
+            if (verify_code.length<1){
+                layer.alert('请输入验证码', {
+                    icon: 5
+                });
+                return false;
+            }
+            return true;
+        }
+
+        //刷新验证码
+        function new_verify(obj) {
+            obj.src='/index.php/admin/login/vCode?nowtime='+new Date().getTime();
+        }
+    </script>
+    <!-- 底部结束 -->
+</body>
+</html>

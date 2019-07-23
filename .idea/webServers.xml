@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="631b2096-9478-43e5-a696-a5cd17f7056b" name="myblog" url="http://47.102.139.143">
+        <fileTransfer host="47.102.139.143" port="5039" rootFolder="/usr/share/nginx/html/myblog" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="5039" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

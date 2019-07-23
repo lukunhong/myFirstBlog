@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+
+        <link rel="stylesheet" href="<?php echo __ACSS__;?>/formSelects-v4.css" />
+
+        <link rel="stylesheet" href="<?php echo __ACSS__;?>/font.css">
+        <link rel="stylesheet" href="<?php echo __ACSS__;?>/xadmin.css">
+        <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
+        <script src="<?php echo __ALIB__;?>/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="<?php echo __AJS__;?>/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+        <script src="<?php echo __AJS__;?>/html5.min.js"></script>
+        <script src="<?php echo __AJS__;?>/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            .xm-select-dl{
+                height: 180px;
+            }
+            #hold_on{
+                display: none;
+                vertical-align: middle;
+                background-color: #009688;
+                color: #fff;
+                white-space: nowrap;
+                text-align: center;
+                font-size: 14px;
+                border: none;
+                border-radius: 2px;
+                cursor: pointer;
+                opacity: 0.9;
+            }
+        </style>
+    </head>
+    
+    <body>
+    <div><br></div>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form"  enctype="multipart/form-data" target="addfile" method="post" action="/index.php/admin/article/artAdd.php">
+                    <div class="layui-form-item">
+                        <label for="L_email" class="layui-form-label">
+                            <span class="x-red">*</span>文章标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="title" name="title" required="" lay-verify="title" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red">*</span></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                            <span class="x-red">*</span>导航图片</label>
+                        <div class="layui-input-inline">
+                            <div id="localImag_front" style="display: inline-block;width: 200px;height: 110px;text-align: center">
+                                <img id="preview_front" src="<?php echo __AIMAGES__;?>/upload.png" style="display: block; width: 120px; height: 60px;margin: 0px auto;">
+                                <p style="color: grey;" id="front_msg">图片</p>
+                                <input type="file" name="pic" id="license" style="width:180px;margin-top: 3px;" onchange="javascript:setImagePreview('license');">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="username" class="layui-form-label">
+                            <span class="x-red">*</span>所属栏目</label>
+                        <div class="layui-input-inline">
+                            <select id="cat_id" name="cat_id" class="valid" xm-select="formSelects1" xm-select-radio xm-select-skin="danger" xm-select-direction="up" xm-select-search-type="dl">
+                                <?php foreach($categorys as $v){ ?>
+                                <option value="<?php echo $v['id'];?>" <?php if($v['id']==1) echo 'selected'; ?>><?php echo $v['cat_name'];?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="phone" class="layui-form-label">
+                            <span class="x-red">*</span>文章内容</label>
+                        <div class="layui-input-block" style="width: 80%;">
+                            <textarea name="content" class="layui-textarea" id="content" style="padding: 0px 0px;height: 300px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label"></label>
+                        <button id="sure-btn" class="layui-btn">提交</button>
+                        <label id="hold_on" class="layui-btn">正在提交...</label>
+                        <label id="close" class="layui-btn">关闭</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="<?php echo __AJS__;?>/jquery.min.js"></script>
+        <script src="<?php echo __AJS__;?>/formSelects-v4.min.js"></script>
+        <script src="<?php echo __AJS__;?>/ueditor/ueditor.config.js"></script>
+        <script src="<?php echo __AJS__;?>/ueditor/ueditor.all.min.js"></script>
+        <script>
+            layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+            });
+            var editor = new UE.ui.Editor();
+            editor.render("content");
+            var cat_id = 1;
+            //监听选中
+            layui.formSelects.on('formSelects1', function(id, vals, val){
+                cat_id = val.val;
+            }, true);
+            $('#sure-btn').on('click', function(e){
+                //iframe异步提交
+                var form = e.target.form;
+                function creatIframe(){
+                    var iframe = document.createElement('iframe');
+                    iframe.name = 'addfile';
+                    iframe.id = 'addfile';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                    iframe.onload = function(e){
+                        var res = JSON.parse(iframe.contentWindow.document.body.innerHTML);
+                        if (res.code==500){
+                            layer.alert(res.data, {
+                                icon: 5
+                            });
+                            $('#sure-btn').css('display','inline-block');
+                            $('#hold_on').css('display','none');
+                        }else{
+                            layer.alert(res.data, {
+                                icon: 6
+                            }, function() {
+                                //关闭当前frame
+                                xadmin.close();
+                                // 可以对父窗口进行刷新
+                                xadmin.father_reload();
+                            });
+                            return false;
+                        }
+                        document.body.removeChild(iframe);
+                    }
+                }
+                if(checkadd()){
+                    creatIframe();
+                    form.submit();
+                    $('#sure-btn').css('display','none');
+                    $('#hold_on').css('display','inline-block');
+                }
+                return false;
+            });
+            function checkadd() {
+                var title = $("#title").val();
+                if (title.length < 2) {
+                    layer.alert('栏目至少2个字符', {
+                        icon: 5
+                    });
+                    return false;
+                }
+                return true;
+            }
+            $("#close").on('click', function(e){
+                //关闭当前frame
+                xadmin.close();
+                // 可以对父窗口进行刷新
+                xadmin.father_reload();
+            });
+        </script>
+        <script>
+            /*****************图片上传预览（含兼容性）start*****************/
+            function setImagePreview(type) {
+                if (type == 'license'){
+                    var front_file = document.getElementById("license");
+                    var preview_front = document.getElementById("preview_front");
+                    if(front_file.files && front_file.files[0])
+                    {
+                        //火狐下，直接设img属性
+                        preview_front.style.display = 'block';
+                        preview_front.style.width = '200px';
+                        preview_front.style.height = '110px';
+                        //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+                        preview_front.src = window.URL.createObjectURL(front_file.files[0]);
+                    }
+                    else
+                    {
+                        //IE下，使用滤镜
+                        front_file.select();
+                        var imgSrc = document.selection.createRange().text;
+                        var localImagId = document.getElementById("localImag_front"); //必须设置初始大小
+                        localImagId.style.width = "200px";
+                        localImagId.style.height = "110px"; //图片异常的捕捉，防止用户修改后缀来伪造图片
+                        try {
+                            localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                            localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+                        } catch(e) {
+                            alert("您上传的图片格式不正确，请重新选择!");
+                            return false;
+                        }
+                        preview_front.style.display = 'none';
+                        document.selection.empty();
+                    }
+                    $("#front_msg").css('display','none');
+                }
+                return true;
+            }
+            /*********function end************/
+        </script>
+    </body>
+
+</html>

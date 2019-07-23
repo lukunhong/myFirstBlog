@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+      <link rel="stylesheet" href="<?php echo __ACSS__;?>/font.css">
+      <link rel="stylesheet" href="<?php echo __ACSS__;?>/xadmin.css">
+      <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
+      <script src="<?php echo __ALIB__;?>/layui/layui.js" charset="utf-8"></script>
+      <script type="text/javascript" src="<?php echo __AJS__;?>/xadmin.js"></script>
+      <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+      <!--[if lt IE 9]>
+      <script src="<?php echo __AJS__;?>/html5.min.js"></script>
+      <script src="<?php echo __AJS__;?>/respond.min.js"></script>
+      <![endif]-->
+  </head>
+  
+  <body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form action="" method="post" class="layui-form layui-form-pane">
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>角色名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="title" name="title" required autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">
+                        拥有权限
+                    </label>
+                    <table  class="layui-table layui-input-block">
+                        <tbody>
+                            <?php foreach($rule_arr as $k => $v){ ?>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="c_id[write]" lay-skin="primary" lay-filter="father" title="<?php echo $v[0]['title']; ?>">
+                                    </td>
+                                    <td>
+                                        <div class="layui-input-block">
+                                            <?php foreach($v as $k1 => $v1){ ?>
+                                                <input name="ids[]" lay-skin="primary" type="checkbox" title="<?php echo $v1['name']; ?>" value="<?php echo $v1['id']; ?>">
+                                            <?php } ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="desc" class="layui-form-label">
+                        描述
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="desc" name="desc" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="status" class="layui-form-label" style="line-height: 25px;font-size: 14px">
+                        <span class="x-red">*</span>状态</label>
+                    <div class="layui-form-label" style="width: 200px;padding-top: 0px;">
+                        <input type="radio" name="status" value="1" title="启用" checked>
+                        <input type="radio" name="status" value="0" title="禁用">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                <label class="layui-btn" onclick="add()">增加</label>
+              </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer;
+
+        form.on('checkbox(father)', function(data){
+            if(data.elem.checked){
+                $(data.elem).parent().siblings('td').find('input').prop("checked", true);
+                form.render(); 
+            }else{
+               $(data.elem).parent().siblings('td').find('input').prop("checked", false);
+                form.render();  
+            }
+        });
+
+        });
+
+        function add() {
+            var title = $("#title").val();
+            var desc = $("#desc").val();
+            var chk_value =[];//定义一个数组
+            $('input[name="ids[]"]:checked').each(function(){//遍历每一个名字为ids的复选框，其中选中的执行函数
+                chk_value.push($(this).val());//将选中的值添加到数组chk_value中
+            });
+            var groups = chk_value.join(",");
+            var status = $("input[name='status']:checked").val();
+
+            if (title.length<2){
+                alert('角色名不能为空');
+            }
+            if (desc.length<1){
+                alert('描述不能为空');
+            }
+            if (chk_value.length == 0){
+                alert('必须选择拥有的权限');
+            }
+
+            $.post("/index.php/admin/adminRole/roleAdd",{title:title, desc:desc, groups:groups, status:status}, function (res) {
+                if (res.code==500){
+                    layer.alert(res.data, {
+                        icon: 5
+                    })
+                }else{
+                    layer.msg(res.data,{icon:1,time:1000});
+                    // 对父窗口进行刷新
+                    window.setTimeout("xadmin.father_reload()",1000);
+                }
+            },'json');
+
+
+        }
+    </script>
+  </body>
+
+</html>
