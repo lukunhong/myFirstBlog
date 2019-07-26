@@ -509,10 +509,26 @@ FROM article AS a LEFT JOIN category AS c ON a.cat_id=c.id WHERE a.title like '%
             $res = $db::mGetRow($sql);
             if ($res!=false){
                 $data['nick'] = $res['nick'];
-                if ($db::mExec('comment',$data)){
-                    echo rDatas(true,'评论成功');exit();
-                }else{
-                    echo rDatas(false,'评论失败');exit();
+                //开启事务
+                $pdo = $db::mConnect();
+                $pdo->beginTransaction();
+                try{
+                    if ($db::mExec('comment',$data)){
+                        $sql = "UPDATE article SET comm=comm+1 WHERE id={$data['art_id']}";
+                        if ($db::sExec($sql)){
+                            $pdo->commit();
+                            echo rDatas(true,'评论成功');exit();
+                        }else{
+                            $pdo->commit();
+                            echo rDatas(true,'评论成功，但评论数增加失败');exit();
+                        }
+                    }else{
+                        $pdo->rollBack();
+                        echo rDatas(false,'评论失败');exit();
+                    }
+                }catch (PDOException $e){
+                    $pdo->rollBack();
+                    echo rDatas(false,$e->getMessage());exit();
                 }
             }else{
                 unset($_SESSION['home_name']);

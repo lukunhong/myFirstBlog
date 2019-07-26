@@ -409,6 +409,10 @@
     function sendComment() {
         var content =  $("#comment_text").val(); //内容
         var art_id = $("#art_id").val();
+        if (content.length<1){
+            layer.alert('请输入评论内容',{icon: 5});
+            return false;
+        }
         $.post('/home/index/sendComm', {
             content: content,
             art_id: art_id
