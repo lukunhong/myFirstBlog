@@ -2,8 +2,6 @@
 /**
  * Created by PhpStorm.
  * User: lulu
- * Date: 2019/6/24
- * Time: 16:12
  */
 //开启严格模式
 declare(strict_types=1);
