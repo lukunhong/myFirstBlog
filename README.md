@@ -12,7 +12,7 @@
 
 
 ## 演示地址
-[http://www.lukh.top/home/index/list]
+[https://www.lukh.top]
 
 ## 项目源码
 [https://github.com/lukunhong/myFirstBlog]
