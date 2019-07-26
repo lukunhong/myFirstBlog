@@ -47,10 +47,12 @@ class Category{
             if ($exist){
                 echo rDatas(false,'栏目名已存在');exit();
             }else{
-                $now = time();
-                $sql = "INSERT INTO category(cat_name,sort,status,add_time) VALUES ('{$_POST['cat_name']}','{$_POST['sort']}','{$_POST['status']}',{$now})";
-                $res = $db::sExec($sql);
-                if ($res){
+                $data['cat_name'] = $_POST['cat_name'];
+                $data['sort'] = $_POST['sort'];
+                $data['status'] = $_POST['status'];
+                $data['add_time'] = time();
+                $data['update_time'] = time();
+                if ($db::mExec('category',$data,'insert')){
                     echo rDatas(true,'添加成功');exit();
                 }else{
                     echo rDatas(false,'添加失败');exit();

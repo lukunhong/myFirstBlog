@@ -366,11 +366,13 @@ FROM article AS a LEFT JOIN category AS c ON a.cat_id=c.id WHERE a.title like '%
                 $data['password'] = cPassword($_POST['password']);
                 $data['ip'] = getIp();
                 $data['add_time'] = time();
+                $data['login_time'] = time();
+                $data['update_time'] = time();
                 //预处理插入
                 if ($db::mInsert('home_user',$data)){
-                    echo rDatas(true, '添加成功');exit();
+                    echo rDatas(true, '注册成功');exit();
                 }else{
-                    echo rDatas(false,'添加失败');exit();
+                    echo rDatas(false,'注册失败');exit();
                 }
             }else{
                 echo rDatas(false,'请输入短信验证码');exit();

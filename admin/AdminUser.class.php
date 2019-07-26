@@ -72,6 +72,7 @@ class AdminUser{
                 $data['password'] = cPassword($_POST['password']);
                 $data['status'] = $_POST['status'];
                 $data['add_time'] = time();
+                $data['update_time'] = time();
                 $pdo = $db::mConnect();
                 $pdo->beginTransaction();
                 try{

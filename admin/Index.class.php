@@ -19,6 +19,11 @@ class Index{
         }
     }
 
+    public function admin(){
+        echo '<pre>';
+        var_dump($_SERVER);die;
+    }
+
     /**
      *首页数据
      */

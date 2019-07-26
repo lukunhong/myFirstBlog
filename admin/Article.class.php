@@ -105,6 +105,7 @@ class Article{
             $data['cat_id'] = (integer)$_POST['cat_id'];
             $data['content'] = $_POST['content'];
             $data['add_time'] = time();
+            $data['update_time'] = time();
             //开启事务
             $pdo = $db::mConnect();
             $pdo->beginTransaction();

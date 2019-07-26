@@ -55,6 +55,7 @@ class AdminRole{
             $ids = explode(',',$_POST['groups']);
             $adata['status'] = $_POST['status'];
             $adata['add_time'] = time();
+            $adata['update_time'] = time();
             $pdo = $db::mConnect();
             $pdo->beginTransaction();
             try {
