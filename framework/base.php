@@ -15,6 +15,10 @@ $url_str = str_replace('/index.php','',$sel);
 if (!$url_str){
     echo '未知入口';die;
 }
+if ($sel=='/'){
+    echo "<script>window.location.href='/home/index/list';</script>";exit();
+}
+
 $url_arr = explode('/',$url_str);
 
 //允许访问模块
@@ -43,7 +47,7 @@ if ($my_module == 'admin') {
             echo "<script>alert('{$res['data']}');</script>";
             die;
         } else {
-            header('location:/index.php/admin/login/index');
+            echo "<script>window.location.href='/index.php/admin/login/index';</script>";exit();
         }
     }
 }
