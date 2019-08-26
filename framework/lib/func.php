@@ -487,37 +487,36 @@ function write_log(string $title,string $content):bool
  * @param bool $isProxy
  * @return bool|mixed
  */
-function curlData(string $url, array $data=null, int $timeout=1, bool $isProxy=false):string
-{
-    $curl = curl_init();
-    if($isProxy){   //是否设置代理
-        $proxy = "127.0.0.1";   //代理IP
-        $proxyport = "8080";   //代理端口
-        curl_setopt($curl, CURLOPT_PROXY, $proxy.":".$proxyport);
+public function curlData($url, $data=null, $timeout=0, $isProxy=false)
+    {
+        $curl = curl_init();
+        if($isProxy){   //是否设置代理
+            $proxy = "127.0.0.1";   //代理IP
+            $proxyport = "8080";   //代理端口
+            curl_setopt($curl, CURLOPT_PROXY, $proxy.":".$proxyport);
+        }
+        if (stripos($url, "https://") !== false) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_SSLVERSION, 2); //CURL_SSLVERSION_TLSv1
+        }
+        curl_setopt($curl, CURLOPT_URL, $url);
+        if(!empty($data)){
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        if ($timeout > 0) { //超时时间秒
+            curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+        }
+        $output = curl_exec($curl);
+        $error = curl_errno($curl);
+        curl_close($curl);
+        if($error){
+            return false;
+        }
+        return $output;
     }
-    curl_setopt($curl, CURLOPT_URL, $url);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-    if(!empty($data)){
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-                "cache-control: no-cache",
-                "content-type: application/json",)
-        );
-    }
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    if ($timeout > 0) { //超时时间秒
-        curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
-    }
-    $output = curl_exec($curl);
-    $error = curl_errno($curl);
-    curl_close($curl);
-    if($error){
-        return $error;
-    }
-    return $output;
-}
 
 /**
  * 二维数组归类
