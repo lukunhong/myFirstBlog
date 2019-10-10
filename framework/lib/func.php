@@ -82,7 +82,7 @@ function getIpAddress():string
     $json=json_decode($str,true);
     if($json['code']==0){
         $ipcity= $json['data']['region'].$json['data']['city'];
-        $ip= $ipcity.','.$ipmac;
+        $ip= $ipcity;
     }else{
         $ip="";
     }

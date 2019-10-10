@@ -179,7 +179,7 @@
       <ul>
         <?php foreach($article_res as $value){ ?>
         <li><a href="/home/index/article?art_id=<?php echo $value['id']; ?>"><?php echo $value['title']; ?><span class="thumbnail">
-          <img class="thumb" data-original="<?php echo __UPLOADS__.'/'.$value['pic'];?>" src="<?php echo __UPLOADS__.'/'.$value['pic'];?>" alt="">
+          <img class="thumb" src="<?php echo __UPLOADS__.'/'.$value['pic'];?>" alt="">
         </span><span class="text"></span><span class="muted">
           <i class="glyphicon glyphicon-time"></i> <?php echo $value['pub_time']; ?></span><span class="muted"><i class="glyphicon glyphicon-eye-open"></i> <?php echo mt_rand(1,200); ?></span></a></li>
         <?php }  ?>
@@ -289,7 +289,7 @@
                         '</div>';
                     for (var i=0;i<len;i++){
                         str +='<article class="excerpt excerpt-2"><a class="focus" href="/home/index/article?art_id='+res.data[i].id+'" title="">' +
-                            '<img class="thumb" data-original="<?php echo __UPLOADS__;?>/'+res.data[i].pic+'" src="<?php echo __UPLOADS__;?>/'+res.data[i].pic+'" alt=""></a>' +
+                            '<img class="thumb" src="<?php echo __UPLOADS__;?>/'+res.data[i].pic+'" alt=""></a>' +
                             '<header><a class="cat" href="/home/index/category?cat_id='+res.data[i].cat_id+'">'+res.data[i].cat_name+'<i></i></a>' +
                             '<h2><a href="/home/index/article?art_id='+res.data[i].id+'" title="">'+res.data[i].title+'</a></h2>' +
                             '</header>' +

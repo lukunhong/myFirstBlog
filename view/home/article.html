@@ -104,9 +104,9 @@
     </div>
   </nav>
 </header>
-<section class="container">
+<section class="container" style="max-width: 1300px;">
   <div class="content-wrap">
-    <div class="content">
+    <div class="content" style="margin-right: 0px">
       <header class="article-header">
         <h1 class="article-title"><a href="article.html"><?php echo $art_info['title']; ?></a></h1>
         <div class="article-meta">
@@ -122,7 +122,7 @@
         </div>
       </header>
       <article class="article-content">
-        <p><img data-original="images/banner/banner_03.jpg" src="<?php echo __IMAGES__;?>/banner/banner_03.jpg" alt="" /></p>
+        <p><img src="<?php echo __IMAGES__;?>/banner/banner_03.jpg" alt="" /></p>
         <pre>
           <?php echo $art_info['content']; ?>
         </pre>
@@ -175,58 +175,6 @@
       </div>
     </div>
   </div>
-  <aside class="sidebar">
-    <div class="fixed">
-      <div class="widget widget-tabs">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">网站公告</a></li>
-          <!--<li role="presentation"><a href="#centre" aria-controls="centre" role="tab" data-toggle="tab">会员中心</a></li>-->
-          <li role="presentation"><a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长</a></li>
-        </ul>
-        <div class="tab-content">
-          <!--网站公告-->
-          <div role="tabpanel" class="tab-pane notice active" id="notice">
-            <ul>
-              <li>
-                <time datetime="2016-01-04"><?php echo date('m-d'); ?></time>
-                <a href="" onclick="javascript:void(this)">LuLu最近比较懒，什么都没留下</a></li>
-            </ul>
-          </div>
-          <!--会员中心-->
-          <!--<div role="tabpanel" class="tab-pane centre" id="centre">-->
-          <!--<h4>需要登录才能进入会员中心</h4>-->
-          <!--<p> <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary">立即登录</a> <a href="javascript:;" class="btn btn-default">现在注册</a> </p>-->
-          <!--</div>-->
-          <!--联系站长-->
-          <div role="tabpanel" class="tab-pane contact" id="contact">
-            <h2>Email:<br />
-              <a href="mailto:admin@ylsat.com" data-toggle="tooltip" data-placement="bottom" title="990527551@qq.com">990527551@qq.com</a></h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--每日一句-->
-    <div class="widget widget_sentence">
-      <h3>每日经典</h3>
-      <div class="widget-sentence-content">
-        <h4><?php $weekarray=array("日","一","二","三","四","五","六");echo date('Y年m月d日').'星期'.$weekarray[date("w")]; ?></h4>
-        <p>Do not let what you cannot do interfere with what you can do.<br />
-          别让你不能做的事妨碍到你能做的事。（John Wooden）</p>
-      </div>
-    </div>
-    <!--热门文章-->
-    <div class="widget widget_hot">
-      <h3>栏目文章</h3>
-      <ul>
-        <?php foreach($article_res as $value){ ?>
-        <li><a href="/home/index/article?art_id=<?php echo $value['id']; ?>"><?php echo $value['title']; ?><span class="thumbnail">
-          <img class="thumb" data-original="<?php echo __UPLOADS__.'/'.$value['pic'];?>" alt="">
-        </span><span class="text"></span><span class="muted">
-          <i class="glyphicon glyphicon-time"></i> <?php echo $value['pub_time']; ?></span><span class="muted"><i class="glyphicon glyphicon-eye-open"></i> <?php echo mt_rand(1,200); ?></span></a></li>
-        <?php }  ?>
-      </ul>
-    </div>
-  </aside>
 </section>
 <footer class="footer">
   <div class="container">
