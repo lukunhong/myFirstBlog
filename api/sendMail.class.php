@@ -29,7 +29,7 @@ class sendMail
 //        //smtp登录的账号 这里填入字符串格式的qq号即可
 //        $mail->Username = '990527551@qq.com';
 //        // 这个就是之前得到的授权码，一共16位
-//        $mail->Password = '';
+//        $mail->Password = ' 授权码';
 //        $mail->setFrom('990527551@qq.com', 'Lukunhong');
 //        // $to 为收件人的邮箱地址，如果想一次性发送向多个邮箱地址，则只需要将下面这个方法多次调用即可
 //        $mail->addAddress($email);
@@ -56,7 +56,7 @@ class sendMail
             $mail->Host = 'smtp.qq.com';                // SMTP服务器
             $mail->SMTPAuth = true;                      // 允许 SMTP 认证
             $mail->Username = '990527551@qq.com';                // SMTP 用户名  即邮箱的用户名
-            $mail->Password = '';             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
+            $mail->Password = '授权码';             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
             $mail->SMTPSecure = 'ssl';                    // 允许 TLS 或者ssl协议
             $mail->Port = 465;                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
 
